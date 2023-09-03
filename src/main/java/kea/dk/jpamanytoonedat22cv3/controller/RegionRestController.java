@@ -1,7 +1,10 @@
 package kea.dk.jpamanytoonedat22cv3.controller;
 
+import kea.dk.jpamanytoonedat22cv3.model.Kommune;
 import kea.dk.jpamanytoonedat22cv3.model.Region;
+import kea.dk.jpamanytoonedat22cv3.repository.KommuneRepository;
 import kea.dk.jpamanytoonedat22cv3.repository.RegionRepository;
+import kea.dk.jpamanytoonedat22cv3.service.ApiServiceKommuner;
 import kea.dk.jpamanytoonedat22cv3.service.ApiServiceRegion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,5 +46,6 @@ public class RegionRestController
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Region ikke fundet");
         }
     }
+
 
 }

@@ -16,7 +16,7 @@ public class Region
 {
 
     @Id
-    private int kode;
+    private String kode;
     private String navn;
     private String href;
 
@@ -35,12 +35,12 @@ public class Region
         this.kommuneSet = kommuneSet;
     }
 
-    public int getKode()
+    public String getKode()
     {
         return kode;
     }
 
-    public void setKode(int kode)
+    public void setKode(String kode)
     {
         this.kode = kode;
     }

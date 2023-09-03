@@ -36,4 +36,10 @@ public class KommuneRestController
         }
     }
 
+    @GetMapping("/getkommune/{kode}")
+    public ResponseEntity<List<Kommune>> getKommuneByRegion(@PathVariable("kode") String kode){
+        List<Kommune> kommuneList = kommuneRepository.findByRegionKode(kode);
+        return ResponseEntity.ok(kommuneList);
+    }
+
 }
