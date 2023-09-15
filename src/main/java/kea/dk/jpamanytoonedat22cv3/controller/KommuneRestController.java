@@ -7,13 +7,11 @@ import kea.dk.jpamanytoonedat22cv3.service.ApiServiceKommunerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class KommuneRestController
 {
@@ -26,7 +24,7 @@ public class KommuneRestController
     List<Kommune> getKommuner(){
         return apiServiceKommuner.getKommuner();
     }
-    @DeleteMapping("/kommuneDelete/{regionId}")
+    @DeleteMapping("/kommune/{regionId}")
     public ResponseEntity<String> deleteKommuneByRegionId(@PathVariable String regionId) {
         try {
             kommuneRepository.deleteKommuneByRegionKode(regionId);
