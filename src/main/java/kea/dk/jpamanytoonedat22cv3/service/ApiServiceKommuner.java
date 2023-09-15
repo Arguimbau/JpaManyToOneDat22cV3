@@ -7,4 +7,6 @@ import java.util.List;
 public interface ApiServiceKommuner
 {
     List<Kommune> getKommuner();
+
+    List<Kommune> getKommune();
 }

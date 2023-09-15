@@ -14,6 +14,15 @@ public class Kommune
     private String href;
 
 
+    public Kommune(String kode, String navn, String href, Region region) {
+        this.kode = kode;
+        this.navn = navn;
+        this.href = href;
+        this.region = region;
+    }
+
+    public Kommune() {
+    }
 
     @ManyToOne
     @JoinColumn(name = "region", referencedColumnName = "kode")

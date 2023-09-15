@@ -20,6 +20,6 @@ public interface KommuneRepository extends JpaRepository<Kommune, String>
 
     List<Kommune> findByRegionKode(String regionKode);
 
-
+    List<Kommune> findByKode(String kode);
 
 }
