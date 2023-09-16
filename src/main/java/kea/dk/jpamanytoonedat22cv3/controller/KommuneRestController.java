@@ -27,11 +27,16 @@ public class KommuneRestController
     }
     @PutMapping("/getkommunebykode/{kode}")
     public ResponseEntity<Kommune> putKomunne
-            (@PathVariable("kode") String kode){
+            (@PathVariable("kode") String kode,
+             @RequestBody Kommune updatedKommune){
     Optional<Kommune> optionalKommune = kommuneRepository.findById(kode);
     if (optionalKommune.isPresent()){
         Kommune kommune = optionalKommune.get();
-        kommune.setKode(kode);
+
+        kommune.setKode(updatedKommune.getKode());
+        kommune.setNavn(updatedKommune.getNavn());
+        kommune.setRegion(updatedKommune.getRegion());
+
         kommuneRepository.save(kommune);
         return ResponseEntity.ok(kommune);
     }else {
@@ -40,7 +45,15 @@ public class KommuneRestController
 
 }
 
-
+@DeleteMapping("/deletekommune/{kode}")
+public ResponseEntity<String> deleteKommune(@PathVariable String kode) {
+    try {
+        kommuneRepository.deleteById(kode);
+        return ResponseEntity.ok("Kommune Deleted");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting Kommune");
+    }
+}
 
 
     @DeleteMapping("/kommune/{regionId}")
