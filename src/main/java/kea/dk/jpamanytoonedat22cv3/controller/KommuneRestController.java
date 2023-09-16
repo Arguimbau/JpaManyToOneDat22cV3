@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -24,18 +25,23 @@ public class KommuneRestController
     List<Kommune> getKommuner(){
         return apiServiceKommuner.getKommuner();
     }
-
-    @GetMapping("/getkommunebykode/{kode}")
-    public ResponseEntity<String> getkomunne(@PathVariable("kode") String kode)
-    {
-        Kommune kommune = new Kommune();
-        try {
-            kommuneRepository.findByKode(kode);
-            return ResponseEntity.ok(kode + kommune.getNavn() + kommune.getRegion());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting Kommune");
-        }
+    @PutMapping("/getkommunebykode/{kode}")
+    public ResponseEntity<Kommune> putKomunne
+            (@PathVariable("kode") String kode){
+    Optional<Kommune> optionalKommune = kommuneRepository.findById(kode);
+    if (optionalKommune.isPresent()){
+        Kommune kommune = optionalKommune.get();
+        kommune.setKode(kode);
+        kommuneRepository.save(kommune);
+        return ResponseEntity.ok(kommune);
+    }else {
+        return ResponseEntity.notFound().build();
     }
+
+}
+
+
+
 
     @DeleteMapping("/kommune/{regionId}")
     public ResponseEntity<String> deleteKommuneByRegionId(@PathVariable String regionId) {
