@@ -16,10 +16,10 @@ public interface KommuneRepository extends JpaRepository<Kommune, String>
     @Modifying
     @Transactional
     @Query("DELETE FROM Kommune k WHERE k.region.kode = :regionKode")
-    void deleteKommuneByRegionKode(@Param("regionKode") String regionKode);
+    void deleteKommuneByKode(@Param("regionKode") String regionKode);
 
     List<Kommune> findByRegionKode(String regionKode);
 
-    List<Kommune> findByKode(String kode);
+    Kommune findByKode(String kode);
 
 }

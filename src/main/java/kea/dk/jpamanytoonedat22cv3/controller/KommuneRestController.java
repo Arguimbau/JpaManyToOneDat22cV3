@@ -21,55 +21,50 @@ public class KommuneRestController
 
     @Autowired
     KommuneRepository kommuneRepository;
-    @GetMapping("/getkommuner")
+    @GetMapping("/kommuner")
     List<Kommune> getKommuner(){
         return apiServiceKommuner.getKommuner();
     }
-    @PutMapping("/getkommunebykode/{kode}")
-    public ResponseEntity<Kommune> putKomunne
-            (@PathVariable("kode") String kode,
-             @RequestBody Kommune updatedKommune){
-    Optional<Kommune> optionalKommune = kommuneRepository.findById(kode);
-    if (optionalKommune.isPresent()){
-        Kommune kommune = optionalKommune.get();
-
-        kommune.setKode(updatedKommune.getKode());
-        kommune.setNavn(updatedKommune.getNavn());
-        kommune.setRegion(updatedKommune.getRegion());
-
-        kommuneRepository.save(kommune);
-        return ResponseEntity.ok(kommune);
-    }else {
-        return ResponseEntity.notFound().build();
-    }
-
-}
-
-@DeleteMapping("/deletekommune/{kode}")
-public ResponseEntity<String> deleteKommune(@PathVariable String kode) {
-    try {
-        kommuneRepository.deleteById(kode);
-        return ResponseEntity.ok("Kommune Deleted");
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting Kommune");
-    }
-}
-
-
-    @DeleteMapping("/kommune/{regionId}")
-    public ResponseEntity<String> deleteKommuneByRegionId(@PathVariable String regionId) {
+    @GetMapping("/kommune/{kode}")
+    public ResponseEntity<String> getKomunne(@PathVariable("kode") String kode) {
         try {
-            kommuneRepository.deleteKommuneByRegionKode(regionId);
-            return ResponseEntity.ok("Kommuner in Region Deleted");
+            kommuneRepository.findByKode(kode);
+            return ResponseEntity.ok(kode);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting Kommuner in Region");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting Kommune: " + e.getMessage());
         }
     }
 
-    @GetMapping("/getkommune/{kode}")
-    public ResponseEntity<List<Kommune>> getKommuneByRegion(@PathVariable("kode") String kode){
-        List<Kommune> kommuneList = kommuneRepository.findByRegionKode(kode);
-        return ResponseEntity.ok(kommuneList);
+    @PostMapping("/kommune/{kode}")
+    public ResponseEntity<String> addKommune(@PathVariable("kode") String kode, @RequestBody Kommune kommune) {
+        try {
+            kommuneRepository.save( kommune );
+            return ResponseEntity.ok("{}");
+        } catch ( Exception e ) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding Kommune: " + e.getMessage());
+        }
+    }
+
+    @PatchMapping("/kommune/{kode}")
+    public ResponseEntity<String> editKommune(@PathVariable("kode") String kode, @RequestBody Kommune newKommune) {
+        try {
+            Kommune oldKommune = kommuneRepository.findByKode(kode);
+            oldKommune.setNavn(newKommune.getNavn());
+            kommuneRepository.save(oldKommune);
+            return ResponseEntity.ok("{}");
+        } catch ( Exception e ) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error editing Kommune: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/kommune/{kode}")
+    public ResponseEntity<String> deleteKommune(@PathVariable("kode") String kode) {
+        try {
+            kommuneRepository.deleteKommuneByKode(kode);
+            return ResponseEntity.ok("{}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting Kommuner in Region: " + e.getMessage());
+        }
     }
 
 }
